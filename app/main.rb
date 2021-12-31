@@ -1,6 +1,9 @@
 class Board
   def initialize(args, size=45)
     @args = args
+    @turn = 0
+    @move_from = 0
+    @move_to = 0
     @size = size
     @p1_stock = 7
     @p1_score = 0
@@ -23,9 +26,6 @@ class Board
     @args.outputs.primitives << [board_right - 45, board_top, "Player 2"].labels
     @args.outputs.primitives << [board_right - 45, board_top - 30, "Pieces: #{@p2_stock}"].labels
     @args.outputs.primitives << [board_right - 45, board_top - 60, "Score: #{@p2_score}"].labels
-
-
-
   end
 
   def render_plays
@@ -57,10 +57,30 @@ class Board
     end
   end
 
+  def render_start()
+
+  end
+
+  def player1_turn()
+
+  end
+
+  def player2_turn()
+
+  end
+
   def tick()
     render_board()
     render_plays()
     render_player_stats()
+    case @turn
+    when 0
+      render_start
+    when 1
+      player1_turn
+    when 2
+      player2_turn
+    end
   end
 end
 
