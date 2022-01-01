@@ -10,7 +10,7 @@ class Board
     @p2_stock = 7
     @p2_score = 0
     @board = [[2, 1, 2],[1, 1, 1],[1, 1, 1],[1, 2, 1],[0, 1, 0],[0, 1, 0],[1, 1, 1], [2, 1, 2]]
-    @pieces = [[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0], [0, 0, 0]]
+    @pieces = [[1, 2, 2],[1, 1, 2],[1, 2, 2],[0, 0, 0],[0, 0, 0],[0, 0, 0],[1, 2, 2], [1, 1, 2]]
 
   end
 
@@ -44,26 +44,27 @@ class Board
         pos_y = center_y + y * @size
         rotation = 0
         case x
-        when 0
-          if y == 0
-            rotation = 0
-          elsif
-            rotation = -90
-          end
-        when 1
-          if y == 7
-            if cell == 1
-              rotation = 180
-            elsif cell == 2
+          when 0
+            if y == 0
               rotation = 0
+            elsif
+              rotation = -90
             end
-          end
-        when 2
-          if y == 0
-            rotation = 180
-          elsif
-            rotation = -90
-          end
+          when 1
+            rotation = 90
+            if y == 7
+              if cell == 1
+                rotation = 180
+              elsif cell == 2
+                rotation = 0
+              end
+            end
+          when 2
+            if y == 0
+              rotation = 180
+            elsif
+              rotation = -90
+            end
         end
         if @pieces[y][x] > 0
           @args.outputs.primitives << [pos_x, pos_y, @size, @size, sprites[@pieces[y][x]], rotation].sprites
@@ -91,6 +92,11 @@ class Board
     @args.outputs.primitives << [1280/2 , 720 - h - h, "Press Space to Start", 10, 1].labels
     if @args.inputs.keyboard.space
       @turn = 1
+      @p1_stock = 7
+      @p1_score = 0
+      @p2_stock = 7
+      @p2_score = 0
+      @pieces = [[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0], [0, 0, 0]]
     end
 
   end
