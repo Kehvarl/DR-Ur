@@ -58,6 +58,11 @@ class Board
   end
 
   def render_start()
+    w, h = @args.gtk.calcstringbox("Press Space to Stary", 0, "font.ttf")
+    @args.outputs.primitives << [1280/2 , 720 - h - h, "Press Space to Start", 10, 1].labels
+    if @args.inputs.keyboard.space
+      @turn = 1
+    end
 
   end
 
