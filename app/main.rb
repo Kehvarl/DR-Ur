@@ -10,22 +10,28 @@ class Board
     @p2_stock = 7
     @p2_score = 0
     @board = [[2, 1, 2],[1, 1, 1],[1, 1, 1],[1, 2, 1],[0, 1, 0],[0, 1, 0],[1, 1, 1], [2, 1, 2]]
-    @pieces = [[0, 0, 0],[0, 0, 2],[0, 0, 0],[1, 0, 2],[0, 0, 0],[0, 0, 0],[0, 0, 0], [0, 0, 0]]
+    @pieces = [[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0], [0, 0, 0]]
 
   end
 
   def render_player_stats
-    board_left = 1280/2 - (3 * @size)
-    board_right = 1280/2 + (3 * @size)
+    board_left = 1280/2 - (1.5 * @size)
+    board_right = 1280/2 + (1.5 * @size)
     board_top = 720/2 + (8 * @size / 2)
 
-    @args.outputs.primitives << [board_left - 45, board_top, "Player 1"].labels
-    @args.outputs.primitives << [board_left - 45, board_top - 30, "Pieces: #{@p1_stock}"].labels
-    @args.outputs.primitives << [board_left - 45, board_top - 60, "Score: #{@p1_score}"].labels
-    
-    @args.outputs.primitives << [board_right - 45, board_top, "Player 2"].labels
-    @args.outputs.primitives << [board_right - 45, board_top - 30, "Pieces: #{@p2_stock}"].labels
-    @args.outputs.primitives << [board_right - 45, board_top - 60, "Score: #{@p2_score}"].labels
+    if @p1_stock > 0
+      @args.outputs.primitives << [board_left - @size - 5, board_top - @size * 5, @size, @size, 'sprites/hexagon/green.png'].sprites
+    end
+    @args.outputs.primitives << [board_left - 95, board_top, "Player 1"].labels
+    @args.outputs.primitives << [board_left - 95, board_top - 30, "Pieces: #{@p1_stock}"].labels
+    @args.outputs.primitives << [board_left - 95, board_top - 60, "Score: #{@p1_score}"].labels
+
+    if @p2_stock > 0
+      @args.outputs.primitives << [board_right + 5, board_top - @size * 5, @size, @size, 'sprites/hexagon/gray.png', 180].sprites
+    end
+    @args.outputs.primitives << [board_right + 5, board_top, "Player 2"].labels
+    @args.outputs.primitives << [board_right + 5, board_top - 30, "Pieces: #{@p2_stock}"].labels
+    @args.outputs.primitives << [board_right + 5, board_top - 60, "Score: #{@p2_score}"].labels
   end
 
   def render_plays
