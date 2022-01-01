@@ -38,12 +38,35 @@ class Board
     center_x = 1280/2 - (3 * @size / 2)
     center_y = 720/2 - (8 * @size / 2)
     sprites = ['', 'sprites/hexagon/green.png', 'sprites/hexagon/gray.png']
-    @board.each_with_index do |line, y|
+    @pieces.each_with_index do |line, y|
       line.each_with_index do |cell, x|
         pos_x = center_x + x * @size
         pos_y = center_y + y * @size
+        rotation = 0
+        case x
+        when 0
+          if y == 0
+            rotation = 0
+          elsif
+            rotation = -90
+          end
+        when 1
+          if y == 7
+            if cell == 1
+              rotation = 180
+            elsif cell == 2
+              rotation = 0
+            end
+          end
+        when 2
+          if y == 0
+            rotation = 180
+          elsif
+            rotation = -90
+          end
+        end
         if @pieces[y][x] > 0
-          @args.outputs.primitives << [pos_x, pos_y, @size, @size, sprites[@pieces[y][x]], -90].sprites
+          @args.outputs.primitives << [pos_x, pos_y, @size, @size, sprites[@pieces[y][x]], rotation].sprites
         end
       end
     end
