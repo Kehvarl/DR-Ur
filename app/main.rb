@@ -1,7 +1,8 @@
 class Board
-  def initialize(args, size=45)
+  def initialize(args, size=60)
     @args = args
     @turn = 0
+    @moved = false
     @move_from = 0
     @move_to = 0
     @size = size
@@ -9,6 +10,7 @@ class Board
     @p1_score = 0
     @p2_stock = 7
     @p2_score = 0
+    @roll = 0
     @board = [[2, 1, 2],[1, 1, 1],[1, 1, 1],[1, 2, 1],[0, 1, 0],[0, 1, 0],[1, 1, 1], [2, 1, 2]]
     @pieces = [[1, 2, 2],[1, 1, 2],[1, 2, 2],[0, 0, 0],[0, 0, 0],[0, 0, 0],[1, 2, 2], [1, 1, 2]]
 
@@ -18,6 +20,17 @@ class Board
     board_left = 1280/2 - (1.5 * @size)
     board_right = 1280/2 + (1.5 * @size)
     board_top = 720/2 + (8 * @size / 2)
+
+    if @turn > 0
+      @args.outputs.primitives << [board_left - @size * 8, board_top - @size * 6, "Use arrow keys to select piece to move"].labels
+      @args.outputs.primitives << [board_left - @size * 8, board_top - @size * 6 - 20, "Press space to accept move"].labels
+    end
+
+    if @turn == 1
+      @args.outputs.primitives << [board_left - @size * 5, board_top - @size*2, "#{@roll}", @size].labels
+    elsif @turn == 2
+      @args.outputs.primitives << [board_right + @size * 4, board_top - @size*2, "#{@roll}", @size].labels
+    end
 
     if @p1_stock > 0
       @args.outputs.primitives << [board_left - @size - 5, board_top - @size * 5, @size, @size, 'sprites/hexagon/green.png'].sprites
@@ -74,6 +87,10 @@ class Board
   end
 
   def render_board()
+    if @turn > 0
+      w, h = @args.gtk.calcstringbox("The Royal Game of UR", 0, "font.ttf")
+      @args.outputs.primitives << [1280/2 , 720 - h, "The Royal Game of UR", 15, 1].labels
+    end
     center_x = 1280/2 - (3 * @size / 2)
     center_y = 720/2 - (8 * @size / 2)
     color = [[0,0,0],[255,255,255],[0,255,255]]
@@ -90,23 +107,35 @@ class Board
   def render_start()
     w, h = @args.gtk.calcstringbox("Press Space to Stary", 0, "font.ttf")
     @args.outputs.primitives << [1280/2 , 720 - h - h, "Press Space to Start", 10, 1].labels
-    if @args.inputs.keyboard.space
+    if @args.inputs.keyboard.key_down.space
       @turn = 1
       @p1_stock = 7
       @p1_score = 0
       @p2_stock = 7
       @p2_score = 0
       @pieces = [[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0],[0, 0, 0], [0, 0, 0]]
+      @roll = rand(4) + 1
     end
 
   end
 
   def player1_turn()
-
+    if @args.inputs.keyboard.key_down.up
+      @move_from = max(@move_from - 1, 0)
+    elsif @args.inputs.keyboard.key_down.down
+    elsif @args.inputs.keyboard.key_down.space
+      @turn = 2
+      @roll = rand(4) + 1
+    end
   end
 
   def player2_turn()
-
+    if @args.inputs.keyboard.key_down.up
+    elsif @args.inputs.keyboard.key_down.down
+    elsif @args.inputs.keyboard.key_down.space
+      @turn = 1
+      @roll = rand(4) + 1
+    end
   end
 
   def tick()
