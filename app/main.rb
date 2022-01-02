@@ -33,14 +33,14 @@ class Board
     end
 
     if @p1_stock > 0
-      @args.outputs.primitives << [board_left - @size - 5, board_top - @size * 5, @size, @size, 'sprites/hexagon/green.png'].sprites
+      @args.outputs.primitives << [board_left - @size - 5, board_top - @size * 5, @size, @size, 'sprites/circle/green.png'].sprites
     end
     @args.outputs.primitives << [board_left - 95, board_top, "Player 1"].labels
     @args.outputs.primitives << [board_left - 95, board_top - 30, "Pieces: #{@p1_stock}"].labels
     @args.outputs.primitives << [board_left - 95, board_top - 60, "Score: #{@p1_score}"].labels
 
     if @p2_stock > 0
-      @args.outputs.primitives << [board_right + 5, board_top - @size * 5, @size, @size, 'sprites/hexagon/gray.png', 180].sprites
+      @args.outputs.primitives << [board_right + 5, board_top - @size * 5, @size, @size, 'sprites/circle/gray.png', 180].sprites
     end
     @args.outputs.primitives << [board_right + 5, board_top, "Player 2"].labels
     @args.outputs.primitives << [board_right + 5, board_top - 30, "Pieces: #{@p2_stock}"].labels
@@ -50,7 +50,7 @@ class Board
   def render_plays
     center_x = 1280/2 - (3 * @size / 2)
     center_y = 720/2 - (8 * @size / 2)
-    sprites = ['', 'sprites/hexagon/green.png', 'sprites/hexagon/gray.png']
+    sprites = ['', 'sprites/circle/green.png', 'sprites/circle/gray.png']
     @pieces.each_with_index do |line, y|
       line.each_with_index do |cell, x|
         pos_x = center_x + x * @size
